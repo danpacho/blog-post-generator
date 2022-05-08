@@ -62,13 +62,13 @@ const generateMetaData = () => {
     const update = formatDate();
 
     return `---
-    title: TITLE
-    preview: PREVIEW
-    author: AUTHOR
-    update: ${update}
-    color: "${generateHEX()}"
-    tags: TAG1, TAG2
-    ---`;
+title: TITLE
+preview: PREVIEW
+author: AUTHOR
+update: ${update}
+color: "${generateHEX()}"
+tags: TAG1, TAG2
+---`;
 };
 
 async function setStartMessage() {
