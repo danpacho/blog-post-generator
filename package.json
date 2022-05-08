@@ -1,0 +1,31 @@
+{
+    "name": "blog-post-generator",
+    "version": "1.0.0",
+    "description": "cli post generation for UX",
+    "author": "danpacho",
+    "license": "MIT",
+    "private": false,
+    "type": "module",
+    "main": "index.js",
+    "bin": "./index.js",
+    "keywords": [
+        "blog",
+        "post",
+        "generate post"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/danpa725/blog-post-generator"
+    },
+    "scripts": {
+        "start": "node ."
+    },
+    "dependencies": {
+        "chalk": "^5.0.1",
+        "figlet": "^1.5.2",
+        "fs": "^0.0.1-security",
+        "inquirer": "^8.2.4",
+        "nanospinner": "^1.1.0",
+        "path": "^0.12.7"
+    }
+}
