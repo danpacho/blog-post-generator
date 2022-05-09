@@ -1,6 +1,6 @@
 {
     "name": "danpacho-blog-post-generator",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "post generator with CLI for better writing UX",
     "author": "danpacho",
     "license": "MIT",
