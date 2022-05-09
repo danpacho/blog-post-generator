@@ -104,7 +104,7 @@ async function setStartMessage() {
             `${chalk.bold(
                 ` Visit repo ${chalk.black(
                     "@ https://github.com/danpa725/blog-post-generator"
-                )}`
+                )} `
             )}`
         )}`
     );
