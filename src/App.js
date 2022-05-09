@@ -32,7 +32,7 @@ import {
 
 const generateMetaData = (postTitle) => {
     const formatDate = () => {
-        const addZeroForDate = (date) => (date.length <= 2 ? `0${date}` : date);
+        const addZeroForDate = (date) => (date.length < 2 ? `0${date}` : date);
 
         const CurrentDate = new Date();
         const year = CurrentDate.getFullYear();
@@ -258,7 +258,6 @@ async function generatePostInNewCategory({
         await mkdir(saveCategoryDirectory, { recursive: true });
         await writeFile(saveDescriptionUrl, descriptionFile, "utf-8");
 
-        await sleep(750);
         descriptionFileSpinner.success({
             text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
                 `${category} description${fileType} Generated\n`
