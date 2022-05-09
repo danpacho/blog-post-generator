@@ -1,24 +1,30 @@
 {
     "name": "danpacho-blog-post-generator",
     "version": "1.0.1",
-    "description": "cli post generation for UX",
+    "description": "post generator with CLI for better writing UX",
     "author": "danpacho",
     "license": "MIT",
     "private": false,
     "type": "module",
-    "main": "index.js",
-    "bin": "./index.js",
-    "keywords": [
-        "blog",
-        "post",
-        "generate post"
-    ],
+    "main": "./src/App.js",
+    "bin": "./src/App.js",
+    "homepage": "https://github.com/danpa725/blog-post-generator#readme",
     "repository": {
         "type": "git",
         "url": "https://github.com/danpa725/blog-post-generator"
     },
+    "bugs": {
+        "url": "https://github.com/danpa725/blog-post-generator/issues"
+    },
+    "keywords": [
+        "blog",
+        "next js",
+        "mdx",
+        "generate post",
+        "cli tool"
+    ],
     "scripts": {
-        "start": "node ."
+        "start": "node src/App.js"
     },
     "dependencies": {
         "chalk": "^5.0.1",
