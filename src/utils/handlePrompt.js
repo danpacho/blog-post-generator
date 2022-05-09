@@ -3,9 +3,11 @@ import inquirer from "inquirer";
 
 import {
     TAB,
+    D_TAB,
     logChooseMessage,
     logErrorMessage,
     logUserTypeMessage,
+    exitOnError,
 } from "./index.js";
 
 async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
@@ -26,8 +28,11 @@ async function getUserSlectValue({
     inputType = "SLECT",
     inputMessage,
 }) {
-    if (!Array.isArray(choices)) {
-        logErrorMessage("Invalid Slect Input");
+    if (!Array.isArray(choices) || choices.length === 0) {
+        logErrorMessage(
+            `No ${inputMessage} in your blog\n\n${D_TAB}Check ${inputMessage} is correctly exisiting`
+        );
+        exitOnError();
         return;
     }
     const userSlect = await inquirer.prompt({
