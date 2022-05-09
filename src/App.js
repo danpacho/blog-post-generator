@@ -7,7 +7,11 @@ import { createSpinner } from "nanospinner";
 import { existsSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 
-import { BLOG_FOLDER_NAME, POSTING_TYPE } from "./constant/index.js";
+import {
+    BLOG_FOLDER_NAME,
+    DESCRIPTION_FILE_TYPE,
+    POSTING_TYPE,
+} from "./constant/index.js";
 
 import {
     D_TAB,
@@ -128,6 +132,43 @@ async function getUserCategoryInput() {
     return userCategory;
 }
 
+async function getCategoryDescriptionFile() {
+    const userFileType = await getUserSlectValue({
+        key: "file_type",
+        choices: Object.values(DESCRIPTION_FILE_TYPE),
+        inputMessage: "Description File Type",
+    });
+    const userCategoryDescription = await getUserInputValue({
+        key: "category_description",
+        inputMessage: "Category Description",
+    });
+    const color = generateHEX();
+
+    switch (userFileType) {
+        case DESCRIPTION_FILE_TYPE.JSON:
+            const descriptionJSON = JSON.stringify({
+                emoji: "🎹",
+                description: userCategoryDescription,
+                color,
+            });
+            return {
+                descriptionFile: descriptionJSON,
+                fileType: DESCRIPTION_FILE_TYPE.JSON,
+            };
+
+        case DESCRIPTION_FILE_TYPE.TXT:
+            const descriptionTXT = `${userCategoryDescription}
+color: ${color}
+emoji: 🎹`;
+            return {
+                descriptionFile: descriptionTXT,
+                fileType: DESCRIPTION_FILE_TYPE.TXT,
+            };
+        default:
+            logErrorMessage("Description File Generation Failed");
+    }
+}
+
 async function generatePostInCurrentCategory({ category, blogDirectoryName }) {
     const slectedCategory = await getUserSlectValue({
         key: "slected_category",
@@ -179,6 +220,7 @@ async function generatePostInNewCategory({
     try {
         let category = userInputCategory;
         const saveCategoryDirectory = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${category}`;
+
         while (existsSync(saveCategoryDirectory)) {
             logClear();
             const fileSpinner = createSpinner(
@@ -201,6 +243,28 @@ async function generatePostInNewCategory({
             if (!existsSync(newCategoryDirectory)) break;
         }
 
+        const { descriptionFile, fileType } =
+            await getCategoryDescriptionFile();
+        const saveDescriptionUrl = `${saveCategoryDirectory}/description${fileType}`;
+        const descriptionFileSpinner = createSpinner(
+            `${TAB}${chalk.bgBlue(
+                `${chalk.bold(
+                    ` Generating ${category} description${fileType} ... `
+                )}`
+            )}`
+        ).start();
+
+        await sleep(750);
+        await mkdir(saveCategoryDirectory, { recursive: true });
+        await writeFile(saveDescriptionUrl, descriptionFile, "utf-8");
+
+        await sleep(750);
+        descriptionFileSpinner.success({
+            text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
+                `${category} description${fileType} Generated\n`
+            )}`,
+        });
+
         const savePostDirectoryPath = `${saveCategoryDirectory}/${BLOG_FOLDER_NAME.POSTS}`;
         const fileSpinner = createSpinner(
             `${TAB}${chalk.bgBlue(
@@ -209,11 +273,12 @@ async function generatePostInNewCategory({
                 )}`
             )}`
         ).start();
-        await sleep(1000);
+
+        await sleep(750);
         await mkdir(savePostDirectoryPath, { recursive: true });
         fileSpinner.success({
             text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
-                `${category} Generated\n`
+                `${category}/${BLOG_FOLDER_NAME.POSTS} Generated\n`
             )}`,
         });
 
@@ -221,14 +286,13 @@ async function generatePostInNewCategory({
         const saveUrl = getBlogFilePath(
             `${savePostDirectoryPath}/${titleUrlString}.mdx`
         );
-        await sleep(500);
         const postSpinner = createSpinner(
             `${TAB}${chalk.bgBlue(
                 `${chalk.bold(` Generating Bulk Post... `)}`
             )}`
         ).start();
 
-        await sleep(1000);
+        await sleep(750);
         await writeFile(saveUrl, post, "utf-8");
         postSpinner.success({
             text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(

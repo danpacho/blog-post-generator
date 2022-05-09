@@ -7,5 +7,14 @@ const BLOG_FOLDER_NAME = {
     CONTENTS: "contents",
     POSTS: "posts",
 };
+const DESCRIPTION_FILE_TYPE = {
+    JSON: ".json",
+    TXT: ".txt",
+};
 
-export { MAC_OS_FILE_EXCEPTION, POSTING_TYPE, BLOG_FOLDER_NAME };
+export {
+    MAC_OS_FILE_EXCEPTION,
+    POSTING_TYPE,
+    BLOG_FOLDER_NAME,
+    DESCRIPTION_FILE_TYPE,
+};
