@@ -8,8 +8,8 @@ const BLOG_FOLDER_NAME = {
     POSTS: "posts",
 };
 const DESCRIPTION_FILE_TYPE = {
-    JSON: ".json",
-    TXT: ".txt",
+    JSON: "json",
+    TXT: "txt",
 };
 
 export {
