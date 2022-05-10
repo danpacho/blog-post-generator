@@ -4,22 +4,36 @@ import inquirer from "inquirer";
 import {
     TAB,
     D_TAB,
-    logChooseMessage,
+    logClear,
+    logSlectMessage,
     logErrorMessage,
     logUserTypeMessage,
     exitOnError,
 } from "./index.js";
 
 async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
-    const userInput = await inquirer.prompt({
-        name: key,
-        type: "input",
-        message: `${TAB}${chalk.bgYellow(` ${inputType} `)} ${inputMessage}:`,
-    });
-    const userInputValue = userInput[key]?.trim();
-    logUserTypeMessage(userInputValue);
+    try {
+        while (true) {
+            const userInput = await inquirer.prompt({
+                name: key,
+                type: "input",
+                message: `${TAB}${chalk.bgYellow(
+                    ` ${inputType} `
+                )} ${inputMessage}:`,
+            });
 
-    return userInputValue;
+            const userInputValue = userInput[key]?.trim();
+            if (userInputValue !== "" && userInputValue) {
+                logUserTypeMessage(userInputValue);
+                return userInputValue;
+            }
+            logClear();
+            logErrorMessage("Don't Type empty string");
+        }
+    } catch (e) {
+        logErrorMessage(`${inputType} ${key} error\n\n${D_TAB}${e}`);
+        exitOnError();
+    }
 }
 
 async function getUserSlectValue({
@@ -27,6 +41,7 @@ async function getUserSlectValue({
     choices,
     inputType = "SLECT",
     inputMessage,
+    customeErrorMessage = "",
 }) {
     if (!Array.isArray(choices) || choices.length === 0) {
         logErrorMessage(
@@ -35,18 +50,27 @@ async function getUserSlectValue({
         exitOnError();
         return;
     }
-    const userSlect = await inquirer.prompt({
-        name: key,
-        type: "list",
-        message: `${TAB}${chalk.bgCyan(` ${inputType} `)} ${inputMessage}:`,
-        choices,
-        default: () => choices[0],
-    });
+    try {
+        const userSlect = await inquirer.prompt({
+            name: key,
+            type: "list",
+            message: `${TAB}${chalk.bgCyan(` ${inputType} `)} ${inputMessage}:`,
+            choices,
+            default: () => choices[0],
+        });
 
-    const userSlectValue = userSlect[key];
-    logChooseMessage(userSlectValue);
+        const userSlectValue = userSlect[key];
+        logSlectMessage(userSlectValue);
 
-    return userSlectValue;
+        return userSlectValue;
+    } catch (e) {
+        logErrorMessage(
+            `${
+                customeErrorMessage ? `${customeErrorMessage}\n${D_TAB}` : ""
+            }${inputType} ${key} error\n\n${e}`
+        );
+        exitOnError();
+    }
 }
 
 export { getUserInputValue, getUserSlectValue };
