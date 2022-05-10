@@ -2,10 +2,8 @@
 
 import chalk from "chalk";
 import figlet from "figlet";
-import { createSpinner } from "nanospinner";
 
 import { existsSync } from "fs";
-import { mkdir, writeFile } from "fs/promises";
 
 import {
     BLOG_FOLDER_NAME,
@@ -28,6 +26,8 @@ import {
     getAllCategoryName,
     getBlogDirectoryName,
     getBlogFilePath,
+    makeDirectory,
+    makeFile,
 } from "./utils/index.js";
 
 const generateMetaData = (postTitle) => {
@@ -176,197 +176,95 @@ async function generatePostInCurrentCategory({ category, blogDirectoryName }) {
         inputMessage: "Category",
     });
 
-    try {
-        const { post, titleUrlString } = await generatePost();
+    const { post, titleUrlString } = await generatePost();
 
-        const saveDirectoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${slectedCategory}/${BLOG_FOLDER_NAME.POSTS}`;
-        if (!existsSync(saveDirectoryPath))
-            await mkdir(saveDirectoryPath, { recursive: true });
-
-        const saveUrl = getBlogFilePath(
-            `${saveDirectoryPath}/${titleUrlString}.mdx`
-        );
-        await writeFile(saveUrl, post, "utf-8");
-        const spinner = createSpinner(
-            `${TAB}${chalk.bgBlue(
-                `${chalk.bold(` Generating Bulk Post... `)}`
-            )}`
-        ).start();
-        await sleep(1000);
-
-        spinner.success({
-            text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
-                `Post Generated at\n\n${D_TAB}${saveUrl}`
-            )}`,
+    const saveDirectoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${slectedCategory}/${BLOG_FOLDER_NAME.POSTS}`;
+    if (!existsSync(saveDirectoryPath))
+        await makeDirectory({
+            path: getBlogFilePath(saveDirectoryPath),
+            generatingObjectName: saveDirectoryPath,
         });
 
-        return {
-            isPostGenerationError: false,
-            saveUrl,
-        };
-    } catch (e) {
-        return {
-            isPostGenerationError: true,
-            saveUrl: getBlogFilePath(
-                `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${slectedCategory}/${BLOG_FOLDER_NAME.POSTS}/`
-            ),
-        };
-    }
+    const saveFilePath = `${saveDirectoryPath}/${titleUrlString}`;
+    await makeFile({
+        path: getBlogFilePath(saveFilePath),
+        data: post,
+        fileType: ".mdx",
+        generatingObjectName: saveFilePath,
+    });
 }
 async function generatePostInNewCategory({
     userInputCategory,
     blogDirectoryName,
 }) {
-    try {
-        let category = userInputCategory;
-        const saveCategoryDirectory = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${category}`;
-
-        while (existsSync(saveCategoryDirectory)) {
-            logClear();
-            const fileSpinner = createSpinner(
-                `${TAB}${chalk.bgBlue(
-                    `${chalk.bold(
-                        ` Generating ${category}/${BLOG_FOLDER_NAME.POSTS}... `
-                    )}`
-                )}`
-            ).start();
-            await sleep(500);
-            fileSpinner.error({
-                text: `${TAB}${chalk.bgRed(" ERROR ")} ${chalk.bold(
-                    `${category} is already exsisted`
-                )}\n\n${D_TAB}Please Choose Another Name 🙏\n`,
-            });
-            const newCategory = await getUserCategoryInput();
-            category = newCategory;
-
-            const newCategoryDirectory = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${newCategory}`;
-            if (!existsSync(newCategoryDirectory)) break;
-        }
-
-        const { descriptionFile, fileType } =
-            await getCategoryDescriptionFile();
-        const saveDescriptionUrl = `${saveCategoryDirectory}/description${fileType}`;
-        const descriptionFileSpinner = createSpinner(
-            `${TAB}${chalk.bgBlue(
-                `${chalk.bold(
-                    ` Generating ${category} description${fileType} ... `
-                )}`
-            )}`
-        ).start();
-
-        await sleep(750);
-        await mkdir(saveCategoryDirectory, { recursive: true });
-        await writeFile(saveDescriptionUrl, descriptionFile, "utf-8");
-
-        descriptionFileSpinner.success({
-            text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
-                `${category} description${fileType} Generated\n`
-            )}`,
-        });
-
-        const savePostDirectoryPath = `${saveCategoryDirectory}/${BLOG_FOLDER_NAME.POSTS}`;
-        const fileSpinner = createSpinner(
-            `${TAB}${chalk.bgBlue(
-                `${chalk.bold(
-                    ` Generating ${category}/${BLOG_FOLDER_NAME.POSTS}... `
-                )}`
-            )}`
-        ).start();
-
-        await sleep(750);
-        await mkdir(savePostDirectoryPath, { recursive: true });
-        fileSpinner.success({
-            text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
-                `${category}/${BLOG_FOLDER_NAME.POSTS} Generated\n`
-            )}`,
-        });
-
-        const { post, titleUrlString } = await generatePost();
-        const saveUrl = getBlogFilePath(
-            `${savePostDirectoryPath}/${titleUrlString}.mdx`
+    let category = userInputCategory;
+    let saveCategoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${category}`;
+    while (existsSync(saveCategoryPath)) {
+        logClear();
+        logErrorMessage(
+            `${chalk.underline(
+                chalk.redBright(category)
+            )} is already exsisted\n\n${D_TAB}Please Type Another Category Name 🙏`
         );
-        const postSpinner = createSpinner(
-            `${TAB}${chalk.bgBlue(
-                `${chalk.bold(` Generating Bulk Post... `)}`
-            )}`
-        ).start();
+        category = await getUserCategoryInput();
 
-        await sleep(750);
-        await writeFile(saveUrl, post, "utf-8");
-        postSpinner.success({
-            text: `${TAB}${chalk.bgGreen(" SUCCESS ")} ${chalk.bold(
-                `Post Generated at\n\n${D_TAB}${saveUrl}`
-            )}`,
-        });
-
-        return {
-            isGenerationError: false,
-            saveUrl,
-        };
-    } catch (e) {
-        return {
-            isGenerationError: true,
-            saveUrl: getBlogFilePath(
-                `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${userInputCategory}/${BLOG_FOLDER_NAME.POSTS}/`
-            ),
-        };
+        if (!existsSync(saveCategoryPath)) break;
     }
+
+    const { descriptionFile, fileType } = await getCategoryDescriptionFile();
+    await makeDirectory({
+        path: getBlogFilePath(saveCategoryPath),
+        generatingObjectName: saveCategoryPath,
+    });
+    const filePath = `${saveCategoryPath}/description`;
+    await makeFile({
+        path: getBlogFilePath(filePath),
+        fileType,
+        data: descriptionFile,
+        generatingObjectName: filePath,
+    });
+
+    const savePostDirectoryPath = `${saveCategoryPath}/${BLOG_FOLDER_NAME.POSTS}`;
+    await makeDirectory({
+        path: getBlogFilePath(savePostDirectoryPath),
+        generatingObjectName: savePostDirectoryPath,
+    });
+
+    const { post, titleUrlString } = await generatePost();
+    const savePostPath = `${savePostDirectoryPath}/${titleUrlString}`;
+    await makeFile({
+        path: getBlogFilePath(savePostPath),
+        fileType: ".mdx",
+        data: post,
+        generatingObjectName: savePostPath,
+    });
 }
 
 async function BlogPostGenerator() {
     await setStartMessage();
 
-    const { blogDirectoryName, isError } = await getBlogDirectoryName();
-    if (isError) {
-        logErrorMessage("No Suitable Blog Folder Found");
-        exitOnError();
-    }
-
+    const { blogDirectoryName } = await getBlogDirectoryName();
     const { postingType } = await getPostingType();
 
     switch (postingType) {
         case POSTING_TYPE.CURRENT:
-            const { category, isError } = await getAllCategoryName(
-                blogDirectoryName
-            );
-            if (isError || !Array.isArray(category)) {
-                logErrorMessage(
-                    `Directory Read Error, Might be no category folder at ${blogDirectoryName} folder`
-                );
-                exitOnError();
-            }
-
-            const { isPostGenerationError, saveUrl: currentSaveUrl } =
-                await generatePostInCurrentCategory({
-                    category,
-                    blogDirectoryName,
-                });
-
-            if (isPostGenerationError) {
-                logErrorMessage(
-                    `Post Genenration Error in\n\n${D_TAB}${currentSaveUrl}`
-                );
-                exitOnError();
-            }
+            await generatePostInCurrentCategory({
+                category: await (
+                    await getAllCategoryName(blogDirectoryName)
+                ).category,
+                blogDirectoryName,
+            });
             break;
         case POSTING_TYPE.NEW:
-            const userInputCategory = await getUserCategoryInput();
-
-            const { isGenerationError, saveUrl: newSaveUrl } =
-                await generatePostInNewCategory({
-                    userInputCategory,
-                    blogDirectoryName,
-                });
-
-            if (isGenerationError) {
-                logErrorMessage(
-                    `Post Genenration Error in\n\n${D_TAB}${newSaveUrl}`
-                );
-                exitOnError();
-            }
+            await generatePostInNewCategory({
+                userInputCategory: await getUserCategoryInput(),
+                blogDirectoryName,
+            });
             break;
         default:
-            break;
+            logErrorMessage("Posting Type Slection is wrong");
+            exitOnError();
+            return;
     }
     exitOnSuccess();
 }
