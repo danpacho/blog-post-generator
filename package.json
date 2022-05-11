@@ -27,8 +27,6 @@
         "start": "node src/App.js"
     },
     "dependencies": {
-        "fs": "^0.0.1-security",
-        "path": "^0.12.7",
         "inquirer": "^8.2.4",
         "chalk": "^5.0.1",
         "figlet": "^1.5.2",
