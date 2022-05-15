@@ -23,6 +23,7 @@ import {
     logErrorMessage,
     getUserInputValue,
     getUserSlectValue,
+    removeErrorParam,
     getAllCategoryName,
     getBlogDirectoryName,
     getBlogFilePath,
@@ -185,7 +186,9 @@ async function generatePostInCurrentCategory({ category, blogDirectoryName }) {
             generatingObjectName: saveDirectoryPath,
         });
 
-    const saveFilePath = `${saveDirectoryPath}/${titleUrlString}`;
+    const saveFilePath = `${saveDirectoryPath}/${removeErrorParam(
+        titleUrlString
+    )}`;
     await makeFile({
         path: getBlogFilePath(saveFilePath),
         data: post,
@@ -198,7 +201,10 @@ async function generatePostInNewCategory({
     blogDirectoryName,
 }) {
     let category = userInputCategory;
-    let saveCategoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${category}`;
+    let saveCategoryPath = `${blogDirectoryName}/${
+        BLOG_FOLDER_NAME.CONTENTS
+    }/${removeErrorParam(category)}`;
+
     while (existsSync(saveCategoryPath)) {
         logClear();
         logErrorMessage(
@@ -231,7 +237,9 @@ async function generatePostInNewCategory({
     });
 
     const { post, titleUrlString } = await generatePost();
-    const savePostPath = `${savePostDirectoryPath}/${titleUrlString}`;
+    const savePostPath = `${savePostDirectoryPath}/${removeErrorParam(
+        titleUrlString
+    )}`;
     await makeFile({
         path: getBlogFilePath(savePostPath),
         fileType: ".mdx",
