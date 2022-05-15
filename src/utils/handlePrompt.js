@@ -73,4 +73,9 @@ async function getUserSlectValue({
     }
 }
 
-export { getUserInputValue, getUserSlectValue };
+function removeErrorParam(inputString) {
+    const errorParam = /[\/|?|=]/g;
+    return inputString.replace(errorParam, "");
+}
+
+export { getUserInputValue, getUserSlectValue, removeErrorParam };
