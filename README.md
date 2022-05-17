@@ -6,11 +6,11 @@
 
 Adopted at [blog-template](https://github.com/danpa725/blog-template)
 
-Demo is here
+Watch `Demo` below
 
 ![post-generator-demo.gif](./public/post-generator.gif)
 
-## Run at the Terminal with zero installation
+## Run apps on the terminal without any configuration
 
 -   Run once
 
