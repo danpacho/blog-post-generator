@@ -31,6 +31,9 @@ import {
     makeFile,
 } from "./utils/index.js";
 
+/**
+ * @param {string} postTitle
+ */
 const generateMetaData = (postTitle) => {
     const formatDate = () => {
         const addZeroForDate = (date) => (date.length < 2 ? `0${date}` : date);
@@ -70,6 +73,9 @@ async function generatePost() {
     };
 }
 
+/**
+ * @log App boot message
+ */
 async function setStartMessage() {
     logClear();
     await log(
@@ -112,6 +118,12 @@ async function setStartMessage() {
     await sleep(200);
 }
 
+/**
+ * @typedef POSTING_TYPE
+ * @property {"Current Category"} CURRENT
+ * @property {"New Category"} NEW
+ * @returns {{postingType: POSTING_TYPE}} post generation type
+ */
 async function getPostingType() {
     const postingType = await getUserSlectValue({
         key: "posting_type",
@@ -170,10 +182,17 @@ emoji: 🎹`;
     }
 }
 
-async function generatePostInCurrentCategory({ category, blogDirectoryName }) {
+/**
+ * @generate Post within exsisted category
+ * @param {{categoryChoice: string[]; blogDirectoryName: string}} CurrentCtegoryGenerationOption
+ */
+async function generatePostInCurrentCategory({
+    categoryChoice,
+    blogDirectoryName,
+}) {
     const slectedCategory = await getUserSlectValue({
         key: "slected_category",
-        choices: category,
+        choices: categoryChoice,
         inputMessage: "Category",
     });
 
@@ -196,6 +215,10 @@ async function generatePostInCurrentCategory({ category, blogDirectoryName }) {
         generatingObjectName: saveFilePath,
     });
 }
+/**
+ * @generate Post in new category, Not same category name
+ * @param {{userInputCategory: string; blogDirectoryName: string}} NewCtegoryGenerationOption
+ */
 async function generatePostInNewCategory({
     userInputCategory,
     blogDirectoryName,
@@ -257,7 +280,7 @@ async function BlogPostGenerator() {
     switch (postingType) {
         case POSTING_TYPE.CURRENT:
             await generatePostInCurrentCategory({
-                category: await (
+                categoryChoice: await (
                     await getAllCategoryName(blogDirectoryName)
                 ).category,
                 blogDirectoryName,

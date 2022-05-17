@@ -12,8 +12,17 @@ import {
     D_TAB,
 } from "./index.js";
 
-const getBlogFilePath = (path) => join(process.cwd(), path);
+/**
+ * @get Blog current working file directory path
+ * @param {string} inputPath
+ * @returns {string} `cwd()` + `inputPath`
+ */
+const getBlogFilePath = (inputPath) => join(process.cwd(), inputPath);
 
+/**
+ * @get Blog directory name from project `ROOT` dir
+ * @returns {Promise<{blogDirectoryName: string}>} blogDirectoryName
+ */
 async function getBlogDirectoryName() {
     const NOT_DIR_CANDIDATE_ARRAY = [
         MAC_OS_FILE_EXCEPTION,
@@ -54,6 +63,12 @@ async function getBlogDirectoryName() {
         blogDirectoryName,
     };
 }
+
+/**
+ * @get All category name from `blogDirectoryName`/contents
+ * @param {string} blogDirectoryName
+ * @returns {Promise<{category: string[]}>} all category
+ */
 async function getAllCategoryName(blogDirectoryName) {
     try {
         const allCategory = (
@@ -76,6 +91,10 @@ async function getAllCategoryName(blogDirectoryName) {
     }
 }
 
+/**
+ * @make Directory with `path` and named it as `generatingObjectName`
+ * @param {{path: string; generatingObjectName: string }} directoryOption
+ */
 async function makeDirectory({ path, generatingObjectName }) {
     const { start, success, error } = logGenProcess({
         generatingObjectName,
@@ -95,6 +114,10 @@ async function makeDirectory({ path, generatingObjectName }) {
     }
 }
 
+/**
+ * @make File with `path` and named it as `generatingObjectName`
+ * @param {{path: string; fileType: "txt" | "json" | "mdx"; data: string; generatingObjectName: string}} fileOption
+ */
 async function makeFile({ path, fileType, data, generatingObjectName }) {
     const { start, success, error } = logGenProcess({
         generatingObjectName,

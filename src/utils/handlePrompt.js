@@ -11,6 +11,15 @@ import {
     exitOnError,
 } from "./index.js";
 
+/**
+ * User input prompt
+ * @param {InputOption} options
+ * @typedef InputOption
+ * @property {string} [key]
+ * @property {string?} [inputType]
+ * @property {string} [inputMessage]
+ * @returns {string} userInputValue
+ */
 async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
     try {
         while (true) {
@@ -36,6 +45,17 @@ async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
     }
 }
 
+/**
+ * User slected input prompt
+ * @param {Option} SlectOptions
+ * @typedef Option
+ * @property {string} [key]
+ * @property {string[]} [choices]
+ * @property {string?} [inputType]
+ * @property {string} [inputMessage]
+ * @property {string?} [customeErrorMessage]
+ * @returns {string} userSlectValue
+ */
 async function getUserSlectValue({
     key,
     choices,
@@ -73,6 +93,10 @@ async function getUserSlectValue({
     }
 }
 
+/**
+ * @param {string} inputString
+ * @returns {string} Remove `/` `?` `=` from `inputString`
+ */
 function removeErrorParam(inputString) {
     const errorParam = /[\/|?|=]/g;
     return inputString.replace(errorParam, "");
