@@ -1,4 +1,4 @@
-# Blog CLI Post Generator 📔
+# CLI Blog Post Generator📔
 
 ![npm version](https://badge.fury.io/js/@danpacho%2Fpost-generator.svg)
 
@@ -23,14 +23,11 @@ Demo is here
     add scripts to the `package.json`
 
     ```json
-        {
-            ...,
-            "scripts": {
-                ...,
-                "post": "npx -y @danpacho/post-generator"
-            },
-            ...
+    {
+        "scripts": {
+            "post": "npx -y @danpacho/post-generator"
         }
+    }
     ```
 
     and then
@@ -45,6 +42,6 @@ Demo is here
 
 <div align="center">
 
-<sub><sup> <strong>Make People Move</strong> <a href="https://github.com/danpa725"> @danpacho </a></sup></sub><small>🛠</small>
+<strong>Make People Move</strong> <a href="https://github.com/danpa725"> @danpacho </a><small>🛠</small>
 
 </div>
