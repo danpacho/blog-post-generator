@@ -24,37 +24,45 @@ const getBlogFilePath = (inputPath) => join(process.cwd(), inputPath);
  * @returns {Promise<{blogDirectoryName: string}>} blogDirectoryName
  */
 async function getBlogDirectoryName() {
-    const NOT_DIR_CANDIDATE_ARRAY = [
+    const NON_DIR_CANDIDATE_ARRAY = [
         MAC_OS_FILE_EXCEPTION,
-        "node_modules",
         ".vscode",
         ".next",
-        "public",
-        "src",
-        ".eslintrc.json",
-        ".gitnore",
-        ".prettierrc",
-        "blog.config.ts",
-        "mdx.d.ts",
-        "next-env.d.ts",
-        "next.config.js",
-        "package-lock.json",
-        "package.json",
-        "README.md",
-        "tsconfig.json",
-        "tsconfig.path.json",
-        "yarn.lock",
+        ".lock",
+        ".json",
+        ".mdx",
+        ".md",
+        ".txt",
+        ".js",
+        ".ts",
         ".git",
-        ".gitignore",
-        "index.js",
+        ".yaml",
+        ".png",
+        ".jpg",
+        "rc",
+        "info",
+        "config",
+        "build",
+        "attributes",
+        "ignore",
+        "node_modules",
+        "src",
+        "public",
+        "LICENSE",
+        "Dockerfile",
     ];
-    const pathCandidate = await (
+    const blogPathCandidate = await (
         await readdir(process.cwd(), "utf-8")
-    ).filter((file) => !NOT_DIR_CANDIDATE_ARRAY.includes(file));
+    ).filter(
+        (file) =>
+            !NON_DIR_CANDIDATE_ARRAY.map((NON_DIR) =>
+                file.includes(NON_DIR)
+            ).includes(true)
+    );
 
     const blogDirectoryName = await getUserSlectValue({
         key: "directory_name",
-        choices: pathCandidate,
+        choices: blogPathCandidate,
         inputMessage: "Blog Post Directory Name",
         customeErrorMessage: "No Suitable Blog Folder Found",
     });
