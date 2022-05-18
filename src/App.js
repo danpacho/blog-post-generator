@@ -224,11 +224,11 @@ async function generatePostInNewCategory({
     blogDirectoryName,
 }) {
     let category = userInputCategory;
-    let saveCategoryPath = `${blogDirectoryName}/${
+    const initialSaveCategoryPath = `${blogDirectoryName}/${
         BLOG_FOLDER_NAME.CONTENTS
     }/${removeErrorParam(category)}`;
 
-    while (existsSync(saveCategoryPath)) {
+    while (existsSync(initialSaveCategoryPath)) {
         logClear();
         logErrorMessage(
             `${chalk.underline(
@@ -237,15 +237,19 @@ async function generatePostInNewCategory({
         );
         category = await getUserCategoryInput();
 
-        if (!existsSync(saveCategoryPath)) break;
+        const updatedSaveCategoryPath = `${blogDirectoryName}/${
+            BLOG_FOLDER_NAME.CONTENTS
+        }/${removeErrorParam(category)}`;
+
+        if (!existsSync(updatedSaveCategoryPath)) break;
     }
 
     const { descriptionFile, fileType } = await getCategoryDescriptionFile();
     await makeDirectory({
-        path: getBlogFilePath(saveCategoryPath),
-        generatingObjectName: saveCategoryPath,
+        path: getBlogFilePath(initialSaveCategoryPath),
+        generatingObjectName: initialSaveCategoryPath,
     });
-    const filePath = `${saveCategoryPath}/description`;
+    const filePath = `${initialSaveCategoryPath}/description`;
     await makeFile({
         path: getBlogFilePath(filePath),
         fileType,
@@ -253,7 +257,7 @@ async function generatePostInNewCategory({
         generatingObjectName: filePath,
     });
 
-    const savePostDirectoryPath = `${saveCategoryPath}/${BLOG_FOLDER_NAME.POSTS}`;
+    const savePostDirectoryPath = `${initialSaveCategoryPath}/${BLOG_FOLDER_NAME.POSTS}`;
     await makeDirectory({
         path: getBlogFilePath(savePostDirectoryPath),
         generatingObjectName: savePostDirectoryPath,
