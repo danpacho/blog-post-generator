@@ -8,7 +8,7 @@ Adopted at [blog-template](https://github.com/danpa725/blog-template)
 
 Watch `Demo` below
 
-![post-generator-demo.gif](./public/post-generator.gif)
+![post-generator-demo.gif](./public/demo.gif)
 
 ## Run apps on the terminal without any configuration
 
