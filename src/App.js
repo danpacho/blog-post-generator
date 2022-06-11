@@ -7,7 +7,7 @@ import { existsSync } from "fs";
 
 import {
     BLOG_FOLDER_NAME,
-    DESCRIPTION_FILE_TYPE,
+    DESCRIPTION_FILE,
     POSTING_TYPE,
 } from "./constant/index.js";
 
@@ -89,8 +89,9 @@ async function setStartMessage() {
     figlet(
         welcomeMessage,
         {
-            font: "Straight",
-            font: "Efti Robot",
+            // font: "Avatar",
+            // font: "Epic",
+            font: "ASCII New Roman",
             horizontalLayout: "default",
             verticalLayout: "default",
             whitespaceBreak: true,
@@ -119,17 +120,16 @@ async function setStartMessage() {
 }
 
 /**
- * @typedef POSTING_TYPE
- * @property {"Current Category"} CURRENT
- * @property {"New Category"} NEW
- * @returns {{postingType: POSTING_TYPE}} post generation type
+ * @returns {Promise<{postingType: "Current Category" | "New Category"}>} post generation type
  */
 async function getPostingType() {
-    const postingType = await getUserSlectValue({
-        key: "posting_type",
-        choices: Object.values(POSTING_TYPE),
-        inputMessage: "Post Generation Type",
-    });
+    const postingType = /**@type {"Current Category" | "New Category"} */ (
+        await getUserSlectValue({
+            key: "posting_type",
+            choices: Object.values(POSTING_TYPE),
+            inputMessage: "Post Generation Type",
+        })
+    );
 
     return {
         postingType,
@@ -146,11 +146,13 @@ async function getUserCategoryInput() {
 }
 
 async function getCategoryDescriptionFile() {
-    const userFileType = await getUserSlectValue({
-        key: "file_type",
-        choices: Object.values(DESCRIPTION_FILE_TYPE),
-        inputMessage: "Description File Type",
-    });
+    const userFileType = /** @type {"txt" | "json" | "mdx"} */ (
+        await getUserSlectValue({
+            key: "file_type",
+            choices: Object.values(DESCRIPTION_FILE),
+            inputMessage: "Description File Type",
+        })
+    );
     const userCategoryDescription = await getUserInputValue({
         key: "category_description",
         inputMessage: "Category Description",
@@ -158,7 +160,7 @@ async function getCategoryDescriptionFile() {
     const color = generateHEX();
 
     switch (userFileType) {
-        case DESCRIPTION_FILE_TYPE.JSON:
+        case DESCRIPTION_FILE.JSON:
             const descriptionJSON = JSON.stringify({
                 emoji: "🎹",
                 description: userCategoryDescription,
@@ -166,16 +168,16 @@ async function getCategoryDescriptionFile() {
             });
             return {
                 descriptionFile: descriptionJSON,
-                fileType: DESCRIPTION_FILE_TYPE.JSON,
+                fileType: DESCRIPTION_FILE.JSON,
             };
 
-        case DESCRIPTION_FILE_TYPE.TXT:
+        case DESCRIPTION_FILE.TXT:
             const descriptionTXT = `${userCategoryDescription}
 color: ${color}
 emoji: 🎹`;
             return {
                 descriptionFile: descriptionTXT,
-                fileType: DESCRIPTION_FILE_TYPE.TXT,
+                fileType: DESCRIPTION_FILE.TXT,
             };
         default:
             logErrorMessage("Description File Generation Failed");
@@ -211,13 +213,13 @@ async function generatePostInCurrentCategory({
     await makeFile({
         path: getBlogFilePath(saveFilePath),
         data: post,
-        fileType: ".mdx",
+        fileType: "mdx",
         generatingObjectName: saveFilePath,
     });
 }
 /**
  * @generate Post in new category, Not same category name
- * @param {{userInputCategory: string; blogDirectoryName: string}} NewCtegoryGenerationOption
+ * @param {{userInputCategory: string; blogDirectoryName: string}} NewCategoryGenerationOption
  */
 async function generatePostInNewCategory({
     userInputCategory,
@@ -269,7 +271,7 @@ async function generatePostInNewCategory({
     )}`;
     await makeFile({
         path: getBlogFilePath(savePostPath),
-        fileType: ".mdx",
+        fileType: "mdx",
         data: post,
         generatingObjectName: savePostPath,
     });
