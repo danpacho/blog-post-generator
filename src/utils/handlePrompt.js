@@ -18,18 +18,20 @@ import {
  * @property {string} [key]
  * @property {string?} [inputType]
  * @property {string} [inputMessage]
- * @returns {string} userInputValue
+ * @returns {Promise<string>} userInputValue
  */
 async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
     try {
         while (true) {
-            const userInput = await inquirer.prompt({
-                name: key,
-                type: "input",
-                message: `${TAB}${chalk.bgYellow(
-                    ` ${inputType} `
-                )} ${inputMessage}:`,
-            });
+            const userInput = /**@type {{[key:string]:string}} */ (
+                await inquirer.prompt({
+                    name: key,
+                    type: "input",
+                    message: `${TAB}${chalk.bgYellow(
+                        ` ${inputType} `
+                    )} ${inputMessage}:`,
+                })
+            );
 
             const userInputValue = userInput[key]?.trim();
             if (userInputValue !== "" && userInputValue) {
@@ -54,7 +56,7 @@ async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
  * @property {string?} [inputType]
  * @property {string} [inputMessage]
  * @property {string?} [customeErrorMessage]
- * @returns {string} userSlectValue
+ * @returns {Promise<string>} userSlectedValue
  */
 async function getUserSlectValue({
     key,
@@ -71,13 +73,17 @@ async function getUserSlectValue({
         return;
     }
     try {
-        const userSlect = await inquirer.prompt({
-            name: key,
-            type: "list",
-            message: `${TAB}${chalk.bgCyan(` ${inputType} `)} ${inputMessage}:`,
-            choices,
-            default: () => choices[0],
-        });
+        const userSlect = /**@type {{[key:string]:string}} */ (
+            await inquirer.prompt({
+                name: key,
+                type: "list",
+                message: `${TAB}${chalk.bgCyan(
+                    ` ${inputType} `
+                )} ${inputMessage}:`,
+                choices,
+                default: () => choices[0],
+            })
+        );
 
         const userSlectValue = userSlect[key];
         logSlectMessage(userSlectValue);
