@@ -1,7 +1,7 @@
 import { mkdir, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 
-import { MAC_OS_FILE_EXCEPTION } from "../constant/index.js";
+import { GENERATION_TIME, MAC_OS_FILE_EXCEPTION } from "../constant/index.js";
 
 import {
     logErrorMessage,
@@ -37,12 +37,14 @@ async function getBlogDirectoryName() {
         ".ts",
         ".git",
         ".yaml",
+        ".xml",
         ".png",
         ".jpg",
         "rc",
         "info",
         "config",
         "build",
+        "scripts",
         "attributes",
         "ignore",
         "node_modules",
@@ -50,6 +52,7 @@ async function getBlogDirectoryName() {
         "public",
         "LICENSE",
         "Dockerfile",
+        "github",
     ];
     const blogPathCandidate = await (
         await readdir(process.cwd(), "utf-8")
@@ -111,7 +114,7 @@ async function makeDirectory({ path, generatingObjectName }) {
 
     try {
         start();
-        await sleep(1000);
+        await sleep(GENERATION_TIME);
         await mkdir(path, { recursive: true });
         success();
     } catch (e) {
@@ -134,7 +137,7 @@ async function makeFile({ path, fileType, data, generatingObjectName }) {
 
     try {
         start();
-        await sleep(1000);
+        await sleep(GENERATION_TIME);
         const filePath = `${path}.${fileType}`;
         await writeFile(filePath, data, "utf-8");
         success();
