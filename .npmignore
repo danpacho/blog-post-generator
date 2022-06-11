@@ -1,4 +1,5 @@
 public
-.prettierrc
 README.md
+jsconfig.json
+.prettierrc
 .vscode
