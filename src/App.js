@@ -162,7 +162,7 @@ async function getCategoryDescriptionFile() {
     switch (userFileType) {
         case DESCRIPTION_FILE.JSON:
             const descriptionJSON = JSON.stringify({
-                emoji: "🎹",
+                emoji: "🌏",
                 description: userCategoryDescription,
                 color,
             });
@@ -174,7 +174,7 @@ async function getCategoryDescriptionFile() {
         case DESCRIPTION_FILE.TXT:
             const descriptionTXT = `${userCategoryDescription}
 color: ${color}
-emoji: 🎹`;
+emoji: 🌏`;
             return {
                 descriptionFile: descriptionTXT,
                 fileType: DESCRIPTION_FILE.TXT,
