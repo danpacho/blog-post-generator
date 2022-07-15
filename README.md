@@ -1,26 +1,29 @@
-# CLI Blog Post Generator📔
+<div align="center"> 
+<h1>Blog Post Generator</h1>
 
 ![npm version](https://badge.fury.io/js/@danpacho%2Fpost-generator.svg)
 
+</div>
+
 > `CLI` Post-generator for a more `prosperous life`
 
-Adopted at [blog-template](https://github.com/danpa725/blog-template)
+Adopted at [next your home](https://github.com/danpa725/next-your-home)
 
 Watch `Demo` below
 
 ![post-generator-demo.gif](./public/demo.gif)
 
-## Run apps on the terminal without any configuration
+## Run apps on the terminal, without any configuration
 
--   Run once
+1.  Once
 
-    ```sh
+    ```bash
     npx -y @danpacho/post-generator
     ```
 
--   Run with scripts
+2.  With scripts
 
-    add scripts to the `package.json`
+    **add to the `package.json`**
 
     ```json
     {
@@ -30,9 +33,9 @@ Watch `Demo` below
     }
     ```
 
-    and then
+    **run with script**
 
-    ```sh
+    ```bash
     yarn post
     ```
 
@@ -40,8 +43,10 @@ Watch `Demo` below
 
 [MIT](./LICENSE)
 
+<br />
+
 <div align="center">
 
-<strong>Make People Move</strong> <a href="https://github.com/danpa725"> @danpacho </a><small>🛠</small>
+<strong>Make People Move</strong> <a href="https://github.com/danpa725"> @danpacho </a>
 
 </div>
