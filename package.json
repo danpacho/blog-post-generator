@@ -1,6 +1,6 @@
 {
     "name": "@danpacho/post-generator",
-    "version": "1.2.7",
+    "version": "1.2.8",
     "description": "post generator with CLI for better writing UX",
     "author": "danpacho",
     "license": "MIT",
