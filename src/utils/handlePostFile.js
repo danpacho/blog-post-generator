@@ -40,6 +40,7 @@ async function getBlogDirectoryName() {
         ".xml",
         ".png",
         ".jpg",
+        ".log",
         "rc",
         "info",
         "config",
