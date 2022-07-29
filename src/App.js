@@ -111,7 +111,7 @@ async function setStartMessage() {
         `${D_TAB}${chalk.bgCyan(
             `${chalk.bold(
                 ` Visit repo ${chalk.black(
-                    "@ https://github.com/danpa725/blog-post-generator"
+                    "@ https://github.com/danpacho/blog-post-generator "
                 )} `
             )}`
         )}`
