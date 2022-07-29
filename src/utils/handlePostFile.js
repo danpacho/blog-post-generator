@@ -1,9 +1,12 @@
+import chalk from "chalk";
+
 import { mkdir, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 
 import { GENERATION_TIME, MAC_OS_FILE_EXCEPTION } from "../constant/index.js";
 
 import {
+    log,
     logErrorMessage,
     logGenProcess,
     exitOnError,
@@ -63,6 +66,18 @@ async function getBlogDirectoryName() {
                 file.includes(NON_DIR)
             ).includes(true)
     );
+
+    const isBlogDirectoryNameUnique = blogPathCandidate.length === 1;
+    if (isBlogDirectoryNameUnique) {
+        log(
+            `${D_TAB}Your Blog Directory: ${chalk.bgBlackBright(
+                ` ${chalk.bold(blogPathCandidate[0])} `
+            )}`
+        );
+        return {
+            blogDirectoryName: blogPathCandidate[0],
+        };
+    }
 
     const blogDirectoryName = await getUserSlectValue({
         key: "directory_name",
