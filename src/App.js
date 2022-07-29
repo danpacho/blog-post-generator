@@ -48,7 +48,7 @@ const generateMetaData = (postTitle) => {
     const update = formatDate();
 
     return `---
-title: ${postTitle}
+title: ${postTitle.replace(/:/g, "")}
 preview: PREVIEW
 author: AUTHOR
 update: ${update}
@@ -68,7 +68,7 @@ async function generatePost() {
         `,
         titleUrlString:
             typeof userTitle === "string"
-                ? userTitle?.replace(/ /g, "-")
+                ? userTitle.replace(/:/g, "").replace(/ /g, "-")
                 : userTitle,
     };
 }
