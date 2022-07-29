@@ -44,6 +44,7 @@ async function getBlogDirectoryName() {
         ".png",
         ".jpg",
         ".log",
+        ".env",
         "rc",
         "info",
         "config",
