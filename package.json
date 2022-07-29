@@ -1,7 +1,7 @@
 {
     "name": "@danpacho/post-generator",
     "version": "1.2.8",
-    "description": "post generator with CLI for better writing UX",
+    "description": "CLI post generator for better writing UX",
     "author": "danpacho",
     "license": "MIT",
     "private": false,
@@ -17,11 +17,9 @@
         "url": "https://github.com/danpa725/blog-post-generator/issues"
     },
     "keywords": [
-        "blog",
-        "next js",
-        "mdx",
-        "generate post",
-        "cli tool"
+        "cli",
+        "post generator",
+        "next your home"
     ],
     "scripts": {
         "start": "node src/App.js"
