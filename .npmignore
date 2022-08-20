@@ -1,5 +1,9 @@
 public
 README.md
 jsconfig.json
+.eslintrc
+.lintstagedrc
 .prettierrc
+.prettierignore
 .vscode
+.husky
