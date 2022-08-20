@@ -3,50 +3,46 @@
 
 ![npm version](https://badge.fury.io/js/@danpacho%2Fpost-generator.svg)
 
+> `CLI` post generator for a more `prosperous life`
+
 </div>
 
-> `CLI` Post-generator for a more `prosperous life`
-
-Adopted at [next your home](https://github.com/danpa725/next-your-home)
-
-Watch `Demo` below
+# Demo
 
 ![post-generator-demo.gif](./public/demo.gif)
 
-## Run apps on the terminal, without any configuration
+# Run apps
 
-1.  Once
+## Once
 
     ```bash
     npx -y @danpacho/post-generator
     ```
 
-2.  With scripts
+## With scripts
 
-    **add to the `package.json`**
+1. **add to the `package.json`**
 
-    ```json
-    {
-        "scripts": {
-            "post": "npx -y @danpacho/post-generator"
-        }
+```json
+{
+    "scripts": {
+        "post": "npx -y @danpacho/post-generator"
     }
-    ```
+}
+```
 
-    **run with script**
+2. **run with script**
 
-    ```bash
-    yarn post
-    ```
+```bash
+yarn post
+```
 
-## LICENSE
+## Installation
+
+```bash
+pnpm add -D @danpacho/post-generator
+```
+
+# LICENSE
 
 [MIT](./LICENSE)
-
-<br />
-
-<div align="center">
-
-<strong>Make People Move</strong> <a href="https://github.com/danpa725"> @danpacho </a>
-
-</div>
