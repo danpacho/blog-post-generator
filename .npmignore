@@ -3,8 +3,9 @@ public
 README.md
 
 # config
+pnpm-lock.yaml
 jsconfig.json
-.eslintrc
+.eslintrc.json
 .lintstagedrc
 .prettierrc
 .prettierignore
