@@ -68,7 +68,7 @@ async function getBlogDirectoryName() {
     const isBlogDirectoryNameUnique = blogPathCandidate.length === 1
     if (isBlogDirectoryNameUnique) {
         log(
-            `${D_TAB}Your Blog Directory: ${chalk.bgBlue(
+            `${D_TAB}Your Blog Directory: ${chalk.bgWhiteBright(
                 ` ${chalk.bold(blogPathCandidate[0])} `
             )}`
         )
