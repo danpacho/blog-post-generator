@@ -1,17 +1,17 @@
-import chalk from "chalk";
-import { createSpinner } from "nanospinner";
+import chalk from "chalk"
+import { createSpinner } from "nanospinner"
 
-import { D_TAB, TAB } from "./index.js";
+import { D_TAB, TAB } from "./tab.js"
 
 /**
  * @log Message
  * @param {string} message
  */
-const log = (message) => console.log(`${message}\n`);
+const log = (message) => console.log(`${message}\n`)
 /**
  * @log Clear Message
  */
-const logClear = () => console.clear();
+const logClear = () => console.clear()
 /**
  * @log `slectedInput` message
  * @param {string} slectedInput
@@ -21,7 +21,7 @@ const logSlectMessage = (slectedInput) =>
         `\n${D_TAB}You Slect ${chalk.greenBright(
             `[ ${chalk.bold(slectedInput)} ]`
         )}`
-    );
+    )
 /**
  * @log `typingInput` message
  * @param {string} typingInput
@@ -31,13 +31,13 @@ const logUserTypeMessage = (typingInput) =>
         `\n${D_TAB}You Type ${chalk.yellowBright(
             `[ ${chalk.bold(typingInput)} ]`
         )}`
-    );
+    )
 /**
  * @log Error with `errorDescription`
  * @param {string} errorDescription
  */
 const logErrorMessage = (errorDescription) =>
-    log(`\n${D_TAB}${chalk.bgRed(" ERROR ")} ${chalk.bold(errorDescription)}`);
+    log(`\n${D_TAB}${chalk.bgRed(" ERROR ")} ${chalk.bold(errorDescription)}`)
 
 /**
  * @log `dir` or `file` Generation process message
@@ -45,11 +45,11 @@ const logErrorMessage = (errorDescription) =>
  * @returns {{start: () => import("nanospinner").Spinner; success: () => import("nanospinner").Spinner; error: () => import("nanospinner").Spinner}}
  */
 const logGenProcess = ({ generatingObjectName, savePath = undefined }) => {
-    const genProcess = createSpinner();
+    const genProcess = createSpinner()
 
     const savePathMessage = savePath
         ? `at\n\n${D_TAB}${chalk.greenBright(savePath)}\n`
-        : "";
+        : ""
     return {
         start: () =>
             genProcess.start({
@@ -75,8 +75,8 @@ const logGenProcess = ({ generatingObjectName, savePath = undefined }) => {
                     )}`
                 )}`,
             }),
-    };
-};
+    }
+}
 
 export {
     log,
@@ -85,4 +85,4 @@ export {
     logUserTypeMessage,
     logErrorMessage,
     logGenProcess,
-};
+}

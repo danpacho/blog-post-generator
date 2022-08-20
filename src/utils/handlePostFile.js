@@ -1,26 +1,22 @@
-import chalk from "chalk";
+import chalk from "chalk"
 
-import { mkdir, readdir, writeFile } from "fs/promises";
-import { join } from "path";
+import { mkdir, readdir, writeFile } from "fs/promises"
+import { join } from "path"
 
-import { GENERATION_TIME, MAC_OS_FILE_EXCEPTION } from "../constant/index.js";
+import { GENERATION_TIME, MAC_OS_FILE_EXCEPTION } from "../constant/index.js"
 
-import {
-    log,
-    logErrorMessage,
-    logGenProcess,
-    exitOnError,
-    getUserSlectValue,
-    sleep,
-    D_TAB,
-} from "./index.js";
+import { D_TAB } from "./tab.js"
+import { sleep } from "./sleep.js"
+import { log, logErrorMessage, logGenProcess } from "./logger.js"
+import { exitOnError } from "./process.js"
+import { getUserSlectValue } from "./handlePromptAction.js"
 
 /**
  * @get Blog current working file directory path
  * @param {string} inputPath
  * @returns {string} `cwd()` + `inputPath`
  */
-const getBlogFilePath = (inputPath) => join(process.cwd(), inputPath);
+const getBlogFilePath = (inputPath) => join(process.cwd(), inputPath)
 
 /**
  * @get Blog directory name from project `ROOT` dir
@@ -45,6 +41,7 @@ async function getBlogDirectoryName() {
         ".jpg",
         ".log",
         ".env",
+        ".husky",
         "rc",
         "info",
         "config",
@@ -58,7 +55,7 @@ async function getBlogDirectoryName() {
         "LICENSE",
         "Dockerfile",
         "github",
-    ];
+    ]
     const blogPathCandidate = await (
         await readdir(process.cwd(), "utf-8")
     ).filter(
@@ -66,18 +63,18 @@ async function getBlogDirectoryName() {
             !NON_DIR_CANDIDATE_ARRAY.map((NON_DIR) =>
                 file.includes(NON_DIR)
             ).includes(true)
-    );
+    )
 
-    const isBlogDirectoryNameUnique = blogPathCandidate.length === 1;
+    const isBlogDirectoryNameUnique = blogPathCandidate.length === 1
     if (isBlogDirectoryNameUnique) {
         log(
             `${D_TAB}Your Blog Directory: ${chalk.bgBlue(
                 ` ${chalk.bold(blogPathCandidate[0])} `
             )}`
-        );
+        )
         return {
             blogDirectoryName: blogPathCandidate[0],
-        };
+        }
     }
 
     const blogDirectoryName = await getUserSlectValue({
@@ -85,11 +82,11 @@ async function getBlogDirectoryName() {
         choices: blogPathCandidate,
         inputMessage: "Blog Post Directory Name",
         customeErrorMessage: "No Suitable Blog Folder Found",
-    });
+    })
 
     return {
         blogDirectoryName,
-    };
+    }
 }
 
 /**
@@ -104,18 +101,20 @@ async function getAllCategoryName(blogDirectoryName) {
                 await getBlogFilePath(`${blogDirectoryName}/contents`),
                 "utf-8"
             )
-        ).filter((category) => category !== MAC_OS_FILE_EXCEPTION);
-        if (!Array.isArray(allCategory)) throw Error();
+        ).filter((category) => category !== MAC_OS_FILE_EXCEPTION)
+        if (!Array.isArray(allCategory)) throw Error()
 
         return {
             category: allCategory,
-        };
+        }
     } catch (err) {
         logErrorMessage(
             `Directory Read Error, Might be no category folder at ${blogDirectoryName} folder`
-        );
-        exitOnError();
-        return;
+        )
+        exitOnError()
+        return {
+            category: [],
+        }
     }
 }
 
@@ -127,42 +126,40 @@ async function makeDirectory({ path, generatingObjectName }) {
     const { start, success, error } = logGenProcess({
         generatingObjectName,
         savePath: path,
-    });
+    })
 
     try {
-        start();
-        await sleep(GENERATION_TIME);
-        await mkdir(path, { recursive: true });
-        success();
+        start()
+        await sleep(GENERATION_TIME)
+        await mkdir(path, { recursive: true })
+        success()
     } catch (e) {
-        error();
-        logErrorMessage(`\n\n${D_TAB}${e}`);
-        exitOnError();
-        return;
+        error()
+        logErrorMessage(`\n\n${D_TAB}${e}`)
+        exitOnError()
     }
 }
 
 /**
  * @make File with `path` and named it as `generatingObjectName`
- * @param {{path: string; fileType: "txt" | "json" | "mdx"; data: string; generatingObjectName: string}} fileOption
+ * @param {{path: string; fileType: "json" | "mdx"; data: string; generatingObjectName: string}} fileOption
  */
 async function makeFile({ path, fileType, data, generatingObjectName }) {
     const { start, success, error } = logGenProcess({
         generatingObjectName,
         savePath: path,
-    });
+    })
 
     try {
-        start();
-        await sleep(GENERATION_TIME);
-        const filePath = `${path}.${fileType}`;
-        await writeFile(filePath, data, "utf-8");
-        success();
+        start()
+        await sleep(GENERATION_TIME)
+        const filePath = `${path}.${fileType}`
+        await writeFile(filePath, data, "utf-8")
+        success()
     } catch (e) {
-        error();
-        logErrorMessage(`\n\n${D_TAB}${e}`);
-        exitOnError();
-        return;
+        error()
+        logErrorMessage(`\n\n${D_TAB}${e}`)
+        exitOnError()
     }
 }
 
@@ -172,4 +169,4 @@ export {
     getBlogFilePath,
     makeDirectory,
     makeFile,
-};
+}
