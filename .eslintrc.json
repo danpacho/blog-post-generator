@@ -1,0 +1,14 @@
+{
+    "extends": ["eslint-config-airbnb-base", "prettier"],
+    "plugins": ["prettier"],
+    "rules": {
+        "import/extensions": "off",
+        "consistent-return": "off",
+        "no-case-declarations": "off",
+        "no-await-in-loop": "off",
+        "no-console": "off"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020
+    }
+}
