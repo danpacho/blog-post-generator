@@ -18,16 +18,30 @@
     },
     "keywords": [
         "cli",
-        "post generator",
-        "next your home"
+        "post generator"
     ],
     "scripts": {
-        "start": "node src/App.js"
+        "start": "node src/App.js",
+        "lint": "eslint '**/*.js'",
+        "prettier": "prettier '**/*.{js,json,md}' --check",
+        "prettier:fix": "prettier '**/*.{js,json,md}' --write",
+        "pre-commit": "lint-staged",
+        "prepare": "husky install"
     },
     "dependencies": {
-        "inquirer": "^8.2.4",
         "chalk": "^5.0.1",
         "figlet": "^1.5.2",
+        "inquirer": "^8.2.4",
         "nanospinner": "^1.1.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.22.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
+        "prettier": "^2.7.1"
     }
 }
