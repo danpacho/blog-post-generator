@@ -6,8 +6,10 @@
     "license": "MIT",
     "private": false,
     "type": "module",
-    "main": "./src/App.js",
-    "bin": "./src/App.js",
+    "bin": "./build/app.js",
+    "source": "./src/app.js",
+    "main": "./build/app.js",
+    "module": "./build/module.js",
     "homepage": "https://github.com/danpacho/blog-post-generator#readme",
     "repository": {
         "type": "git",
@@ -21,7 +23,10 @@
         "post generator"
     ],
     "scripts": {
-        "start": "node src/App.js",
+        "dev": "node src/app.js",
+        "dev:watch": "parcel watch",
+        "build": "parcel build --dist-dir build",
+        "build:test": "node build/app.js",
         "lint": "eslint '**/*.js'",
         "prettier": "prettier '**/*.{js,json,md}' --check",
         "prettier:fix": "prettier '**/*.{js,json,md}' --write",
@@ -35,6 +40,7 @@
         "nanospinner": "^1.1.0"
     },
     "devDependencies": {
+        "parcel": "^2.7.0",
         "eslint": "^8.22.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^8.5.0",
@@ -43,5 +49,8 @@
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1"
+    },
+    "engines": {
+        "node": ">= 16"
     }
 }
