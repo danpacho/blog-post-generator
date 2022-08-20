@@ -1,5 +1,5 @@
 <div align="center"> 
-<h1>Blog Post Generator</h1>
+<h1>Blog Post Generator 📦</h1>
 
 ![npm version](https://badge.fury.io/js/@danpacho%2Fpost-generator.svg)
 
@@ -15,9 +15,9 @@
 
 ## Once
 
-    ```bash
-    npx -y @danpacho/post-generator
-    ```
+```bash
+npx -y @danpacho/post-generator
+```
 
 ## With scripts
 
@@ -34,7 +34,7 @@
 2. **run with script**
 
 ```bash
-yarn post
+pnpm post
 ```
 
 ## Installation
