@@ -31,7 +31,10 @@ const BLOG_FOLDER_NAME = {
     POSTS: "posts",
 }
 
-const GENERATION_TIME = 750
+/**
+ * @type {250}
+ */
+const GENERATION_TIME = 250
 
 export {
     MAC_OS_FILE_EXCEPTION,
