@@ -5,7 +5,11 @@ import figlet from "figlet"
 
 import { existsSync } from "fs"
 
-import { BLOG_FOLDER_NAME, POSTING_TYPE } from "./constant/index.js"
+import {
+    BLOG_FOLDER_NAME,
+    GENERATION_TIME,
+    POSTING_TYPE,
+} from "./constant/index.js"
 
 import {
     D_TAB,
@@ -18,7 +22,7 @@ import {
     logClear,
     logErrorMessage,
     getUserInputValue,
-    getUserSlectValue,
+    getUserSelectValue,
     removeErrorParam,
     getAllCategoryName,
     getBlogDirectoryName,
@@ -70,24 +74,22 @@ async function generatePost() {
 }
 
 /**
- * @log App boot message
+ * @description App boot message
  */
 async function setStartMessage() {
     logClear()
-    await log(
-        `${D_TAB}${chalk.bgCyan(
-            `${chalk.bold(
-                ` Blog Post Generator By ${chalk.black("@ danpacho")} `
-            )}`
+
+    log(
+        `${D_TAB}${chalk.bgGreenBright.bold(
+            `${TAB}${TAB}${TAB}${TAB}${TAB}${TAB} Easy blog post generator ${TAB}${TAB}${TAB}${TAB}${TAB}${TAB}`
         )}`
     )
-    const welcomeMessage = `${TAB}E A S Y  P O S T`
+
+    const welcomeMessage = `${TAB}Blog Post`
+
     figlet(
         welcomeMessage,
         {
-            // font: "Avatar",
-            // font: "Epic",
-            font: "ASCII New Roman",
             horizontalLayout: "default",
             verticalLayout: "default",
             whitespaceBreak: true,
@@ -95,24 +97,21 @@ async function setStartMessage() {
         },
         (err, figletText) => {
             if (err) {
-                logErrorMessage("E a s y  P o s t, oops error")
+                log("Blog Post")
                 return
             }
-            log(`${chalk.cyanBright(figletText)}`)
+            log(`${chalk.greenBright(figletText)}`)
         }
     )
-    await sleep(200)
+    await sleep(GENERATION_TIME)
 
-    await log(
-        `${D_TAB}${chalk.bgCyan(
-            `${chalk.bold(
-                ` Visit repo ${chalk.black(
-                    "@ https://github.com/danpacho/blog-post-generator "
-                )} `
-            )}`
+    log(
+        `${D_TAB}${chalk.bgGreenBright.bold.black(
+            " https://github.com/danpacho/blog-post-generator "
         )}`
     )
-    await sleep(200)
+
+    await sleep(GENERATION_TIME)
 }
 
 /**
@@ -120,7 +119,7 @@ async function setStartMessage() {
  */
 async function getPostingType() {
     const postingType = /** @type {"Current Category" | "New Category"} */ (
-        await getUserSlectValue({
+        await getUserSelectValue({
             key: "posting_type",
             choices: Object.values(POSTING_TYPE),
             inputMessage: "Post Generation Type",
@@ -164,22 +163,22 @@ async function getCategoryDescriptionFile() {
 }
 
 /**
- * @generate Post within exsisted category
- * @param {{categoryChoice: string[]; blogDirectoryName: string}} CurrentCtegoryGenerationOption
+ * @generate Post within existed category
+ * @param {{categoryChoice: string[]; blogDirectoryName: string}} CurrentCategoryGenerationOption
  */
 async function generatePostInCurrentCategory({
     categoryChoice,
     blogDirectoryName,
 }) {
-    const slectedCategory = await getUserSlectValue({
-        key: "slected_category",
+    const selectedCategory = await getUserSelectValue({
+        key: "selected_category",
         choices: categoryChoice,
         inputMessage: "Category",
     })
 
     const { post, titleUrlString } = await generatePost()
 
-    const saveDirectoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${slectedCategory}/${BLOG_FOLDER_NAME.POSTS}`
+    const saveDirectoryPath = `${blogDirectoryName}/${BLOG_FOLDER_NAME.CONTENTS}/${selectedCategory}/${BLOG_FOLDER_NAME.POSTS}`
     if (!existsSync(saveDirectoryPath))
         await makeDirectory({
             path: getBlogFilePath(saveDirectoryPath),
@@ -214,7 +213,7 @@ async function generatePostInNewCategory({
         logErrorMessage(
             `${chalk.underline(
                 chalk.redBright(category)
-            )} is already exsisted\n\n${D_TAB}Please Type Another Category Name 🙏`
+            )} is already existed\n\n${D_TAB}Please Type Another Category Name 🙏`
         )
         category = await getUserCategoryInput()
 
@@ -278,7 +277,7 @@ async function BlogPostGenerator() {
             })
             break
         default:
-            logErrorMessage("Posting Type Slection is wrong")
+            logErrorMessage("Posting Type is wrong")
             exitOnError()
             return
     }
