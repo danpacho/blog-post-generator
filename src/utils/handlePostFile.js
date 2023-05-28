@@ -9,39 +9,22 @@ import { D_TAB } from "./tab.js"
 import { sleep } from "./sleep.js"
 import { log, logErrorMessage, logGenProcess } from "./logger.js"
 import { exitOnError } from "./process.js"
-import { getUserSlectValue } from "./handlePromptAction.js"
+import { getUserSelectValue } from "./handlePromptAction.js"
 
 /**
- * @get Blog current working file directory path
+ * @description Blog current working file directory path
  * @param {string} inputPath
  * @returns {string} `cwd()` + `inputPath`
  */
 const getBlogFilePath = (inputPath) => join(process.cwd(), inputPath)
 
 /**
- * @get Blog directory name from project `ROOT` dir
+ * @description Blog directory name from project `ROOT` dir
  * @returns {Promise<{blogDirectoryName: string}>} blogDirectoryName
  */
 async function getBlogDirectoryName() {
     const NON_DIR_CANDIDATE_ARRAY = [
-        MAC_OS_FILE_EXCEPTION,
-        ".vscode",
-        ".next",
-        ".lock",
-        ".json",
-        ".mdx",
-        ".md",
-        ".txt",
-        ".js",
-        ".ts",
-        ".git",
-        ".yaml",
-        ".xml",
-        ".png",
-        ".jpg",
-        ".log",
-        ".env",
-        ".husky",
+        "app",
         "rc",
         "info",
         "config",
@@ -56,13 +39,11 @@ async function getBlogDirectoryName() {
         "Dockerfile",
         "github",
     ]
-    const blogPathCandidate = await (
-        await readdir(process.cwd(), "utf-8")
-    ).filter(
+    const blogPathCandidate = (await readdir(process.cwd(), "utf-8")).filter(
         (file) =>
-            !NON_DIR_CANDIDATE_ARRAY.map((NON_DIR) =>
+            NON_DIR_CANDIDATE_ARRAY.map((NON_DIR) =>
                 file.includes(NON_DIR)
-            ).includes(true)
+            ).includes(true) === false && file.includes(".") === false
     )
 
     const isBlogDirectoryNameUnique = blogPathCandidate.length === 1
@@ -77,11 +58,11 @@ async function getBlogDirectoryName() {
         }
     }
 
-    const blogDirectoryName = await getUserSlectValue({
+    const blogDirectoryName = await getUserSelectValue({
         key: "directory_name",
         choices: blogPathCandidate,
         inputMessage: "Blog Post Directory Name",
-        customeErrorMessage: "No Suitable Blog Folder Found",
+        customErrorMessage: "No Suitable Blog Folder Found",
     })
 
     return {
@@ -90,7 +71,7 @@ async function getBlogDirectoryName() {
 }
 
 /**
- * @get All category name from `blogDirectoryName`/contents
+ * @description All category name from `blogDirectoryName`/contents
  * @param {string} blogDirectoryName
  * @returns {Promise<{category: string[]}>} all category
  */
@@ -119,7 +100,7 @@ async function getAllCategoryName(blogDirectoryName) {
 }
 
 /**
- * @make Directory with `path` and named it as `generatingObjectName`
+ * @description Directory with `path` and named it as `generatingObjectName`
  * @param {{path: string; generatingObjectName: string }} directoryOption
  */
 async function makeDirectory({ path, generatingObjectName }) {
@@ -141,7 +122,7 @@ async function makeDirectory({ path, generatingObjectName }) {
 }
 
 /**
- * @make File with `path` and named it as `generatingObjectName`
+ * @description File with `path` and named it as `generatingObjectName`
  * @param {{path: string; fileType: "json" | "mdx"; data: string; generatingObjectName: string}} fileOption
  */
 async function makeFile({ path, fileType, data, generatingObjectName }) {

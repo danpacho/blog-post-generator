@@ -5,7 +5,7 @@ import { TAB, D_TAB } from "./tab.js"
 import {
     logClear,
     logErrorMessage,
-    logSlectMessage,
+    logSelectMessage,
     logUserTypeMessage,
 } from "./logger.js"
 import { exitOnError } from "./process.js"
@@ -47,22 +47,22 @@ async function getUserInputValue({ key, inputType = "TYPE", inputMessage }) {
 }
 
 /**
- * User slected input prompt
- * @param {Option} SlectOptions
+ * User selected input prompt
+ * @param {Option} SelectOptions
  * @typedef Option
  * @property {string} [key]
  * @property {string[]} [choices]
  * @property {string?} [inputType]
  * @property {string} [inputMessage]
- * @property {string?} [customeErrorMessage]
- * @returns {Promise<string>} userSlectedValue
+ * @property {string?} [customErrorMessage]
+ * @returns {Promise<string>} userSelectedValue
  */
-async function getUserSlectValue({
+async function getUserSelectValue({
     key,
     choices,
-    inputType = "SLECT",
+    inputType = "SELECT",
     inputMessage,
-    customeErrorMessage = "",
+    customErrorMessage = "",
 }) {
     if (!Array.isArray(choices) || choices.length === 0) {
         logErrorMessage(
@@ -72,7 +72,7 @@ async function getUserSlectValue({
         return
     }
     try {
-        const userSlect = /** @type {{[key:string]:string}} */ (
+        const userSelect = /** @type {{[key:string]:string}} */ (
             await inquirer.prompt({
                 name: key,
                 type: "list",
@@ -84,14 +84,14 @@ async function getUserSlectValue({
             })
         )
 
-        const userSlectValue = userSlect[key]
-        logSlectMessage(userSlectValue)
+        const userSelectValue = userSelect[key]
+        logSelectMessage(userSelectValue)
 
-        return userSlectValue
+        return userSelectValue
     } catch (e) {
         logErrorMessage(
             `${
-                customeErrorMessage ? `${customeErrorMessage}\n${D_TAB}` : ""
+                customErrorMessage ? `${customErrorMessage}\n${D_TAB}` : ""
             }${inputType} ${key} error\n\n${e}`
         )
         exitOnError()
@@ -107,4 +107,4 @@ function removeErrorParam(inputString) {
     return inputString.replace(errorParam, "")
 }
 
-export { getUserInputValue, getUserSlectValue, removeErrorParam }
+export { getUserInputValue, getUserSelectValue, removeErrorParam }

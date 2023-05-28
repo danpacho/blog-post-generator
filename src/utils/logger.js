@@ -4,26 +4,26 @@ import { createSpinner } from "nanospinner"
 import { D_TAB, TAB } from "./tab.js"
 
 /**
- * @log Message
+ * @description Message
  * @param {string} message
  */
 const log = (message) => console.log(`${message}\n`)
 /**
- * @log Clear Message
+ * @description Clear Message
  */
 const logClear = () => console.clear()
 /**
- * @log `slectedInput` message
- * @param {string} slectedInput
+ * @description `selectedInput` message
+ * @param {string} selectedInput
  */
-const logSlectMessage = (slectedInput) =>
+const logSelectMessage = (selectedInput) =>
     log(
-        `\n${D_TAB}You Slect ${chalk.greenBright(
-            `[ ${chalk.bold(slectedInput)} ]`
+        `\n${D_TAB}You Select ${chalk.greenBright(
+            `[ ${chalk.bold(selectedInput)} ]`
         )}`
     )
 /**
- * @log `typingInput` message
+ * @description `typingInput` message
  * @param {string} typingInput
  */
 const logUserTypeMessage = (typingInput) =>
@@ -33,14 +33,14 @@ const logUserTypeMessage = (typingInput) =>
         )}`
     )
 /**
- * @log Error with `errorDescription`
+ * @description Error with `errorDescription`
  * @param {string} errorDescription
  */
 const logErrorMessage = (errorDescription) =>
     log(`\n${D_TAB}${chalk.bgRed(" ERROR ")} ${chalk.bold(errorDescription)}`)
 
 /**
- * @log `dir` or `file` Generation process message
+ * @description `dir` or `file` Generation process message
  * @param {{generatingObjectName: string; savePath?: string}} generationProcessOption
  * @returns {{start: () => import("nanospinner").Spinner; success: () => import("nanospinner").Spinner; error: () => import("nanospinner").Spinner}}
  */
@@ -81,7 +81,7 @@ const logGenProcess = ({ generatingObjectName, savePath = undefined }) => {
 export {
     log,
     logClear,
-    logSlectMessage,
+    logSelectMessage,
     logUserTypeMessage,
     logErrorMessage,
     logGenProcess,
